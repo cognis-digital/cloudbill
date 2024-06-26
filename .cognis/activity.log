@@ -37,3 +37,4 @@
 2026-01-17T08:44:04  perf: speed. I am speed.
 2026-05-11T15:01:11  fix: the cake is a lie, but the bug was real
 2024-06-04T17:57:27  fix(fixtures): improve error messages with context
+2024-06-26T12:14:34  refactor(output): short-circuit on first critical
