@@ -43,3 +43,4 @@
 2024-08-16T09:05:55  chore(report): trim whitespace in parsed fields
 2024-09-09T16:22:02  test(scan): add a JSON schema for output
 2024-10-01T11:39:09  test(detect): guard against ReDoS in patterns
+2024-10-24T18:56:16  feat(engine): bump the dev toolchain
