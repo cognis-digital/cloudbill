@@ -46,3 +46,4 @@
 2024-10-24T18:56:16  feat(engine): bump the dev toolchain
 2024-10-30T13:13:23  feat(io): lower memory on big inputs
 2024-11-21T08:30:30  refactor(scan): add a regression fixture
+2024-12-15T15:47:37  ci(rules): make timestamps timezone-aware
