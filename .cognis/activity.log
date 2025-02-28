@@ -50,3 +50,4 @@
 2024-12-20T10:04:44  ci(parser): handle empty and malformed input
 2025-01-11T17:21:51  chore(docs): add usage examples to help
 2025-02-04T12:38:58  refactor: future me will understand this
+2025-02-27T19:55:05  test(rules): normalize unicode before matching
