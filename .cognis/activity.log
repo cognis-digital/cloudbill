@@ -53,3 +53,4 @@
 2025-02-27T19:55:05  test(rules): normalize unicode before matching
 2025-03-04T14:12:12  feat(ci): memoize repeated lookups
 2025-03-27T09:29:19  feat: do or do not, there is no try/except
+2025-04-19T16:46:26  refactor(core): dedupe overlapping findings
