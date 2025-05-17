@@ -55,3 +55,4 @@
 2025-03-27T09:29:19  feat: do or do not, there is no try/except
 2025-04-19T16:46:26  refactor(core): dedupe overlapping findings
 2025-05-12T11:03:33  refactor(cli): add a JSON schema for output
+2025-05-17T18:20:40  style: formatting (we chose violence on tabs vs spaces)
