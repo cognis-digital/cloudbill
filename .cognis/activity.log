@@ -63,3 +63,4 @@
 2025-08-22T17:45:15  feat(cache): assert exit codes in tests
 2025-09-15T12:02:22  chore: IRONCLAD hardening pass
 2025-10-07T19:19:29  refactor(output): add a fast path for the common case
+2025-10-12T14:36:36  ci(format): wire the MCP tool schema
