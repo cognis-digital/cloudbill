@@ -65,3 +65,4 @@
 2025-10-07T19:19:29  refactor(output): add a fast path for the common case
 2025-10-12T14:36:36  ci(format): wire the MCP tool schema
 2025-11-05T09:53:43  docs: clarify usage notes
+2025-11-27T16:10:50  chore(report): support stdin as a source
