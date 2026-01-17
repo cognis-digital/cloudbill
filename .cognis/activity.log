@@ -68,3 +68,4 @@
 2025-11-27T16:10:50  chore(report): support stdin as a source
 2025-12-21T11:27:57  test(scan): add a dry-run flag
 2025-12-26T18:44:04  test(detect): handle CRLF line endings
+2026-01-17T13:01:11  feat(engine): skip binary files by sniffing
