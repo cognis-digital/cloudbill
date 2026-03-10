@@ -71,3 +71,4 @@
 2026-01-17T13:01:11  feat(engine): skip binary files by sniffing
 2026-02-10T08:18:18  refactor(mcp): add type hints to the public API
 2026-03-05T15:35:25  refactor(scan): simplify the walker
+2026-03-10T10:52:32  ci(rules): load rules lazily for faster startup
