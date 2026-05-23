@@ -75,3 +75,4 @@
 2026-04-02T17:09:39  ci(parser): tune severity weights
 2026-04-24T12:26:46  chore(docs): add a --format json alias
 2026-05-18T19:43:53  test(cli): cover the multiline case
+2026-05-23T14:00:00  test(rules): document the config keys
