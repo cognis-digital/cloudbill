@@ -36,9 +36,10 @@ FinOps
 <a name="features"></a>
 ## Features
 
-- ✅ Todo
-- ✅ Fixme
-- ✅ Xxx
+- ✅ Load Records
+- ✅ Summarize
+- ✅ Detect Anomalies
+- ✅ To Focus
 - ✅ Runs on Linux/macOS/Windows · Docker · devcontainer
 - ✅ Ports in Python, JavaScript, Go, and Rust (`ports/`)
 
