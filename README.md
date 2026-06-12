@@ -16,7 +16,7 @@
 </div>
 
 ```bash
-pip install cognis-cloudbill
+pip install "git+https://github.com/cognis-digital/cloudbill.git"
 cloudbill scan .            # → prioritized findings in seconds
 ```
 
@@ -49,7 +49,7 @@ FinOps
 ## Quick start
 
 ```bash
-pip install cognis-cloudbill
+pip install "git+https://github.com/cognis-digital/cloudbill.git"
 cloudbill --version
 cloudbill scan .                       # scan current project
 cloudbill scan . --format json         # machine-readable
