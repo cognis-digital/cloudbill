@@ -20,6 +20,12 @@ pip install "git+https://github.com/cognis-digital/cloudbill.git"
 cloudbill scan .            # → prioritized findings in seconds
 ```
 
+<!-- cognis:layman:start -->
+## What is this?
+
+Cloudbill pulls together your cloud spending data from AWS, Azure, or Google Cloud and shows you at a glance how much you are spending, where the money is going, and whether any costs are unusually high. It reads a billing export file you download from your cloud provider, then prints a clear summary broken down by service, account, or region. If a particular service suddenly costs ten times more than usual, cloudbill flags it as an anomaly so you can investigate before the bill gets out of hand. It is aimed at developers, DevOps engineers, and small teams who want a fast, scriptable way to understand cloud costs without signing up for an expensive third-party monitoring platform.
+<!-- cognis:layman:end -->
+
 ## Contents
 
 - [Why cloudbill?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
@@ -46,6 +52,42 @@ FinOps
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:install:start -->
+## Install
+
+`cloudbill` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/cloudbill/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/cloudbill/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/cloudbill.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/cloudbill.git"  # uv
+pip install "git+https://github.com/cognis-digital/cloudbill.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/cloudbill.git
+cd cloudbill && pip install .
+```
+
+Then run:
+```sh
+cloudbill --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
