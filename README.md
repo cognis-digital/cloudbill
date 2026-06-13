@@ -20,6 +20,40 @@ pip install cognis-cloudbill
 cloudbill scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+1. **Install:**
+
+   ```bash
+   pip install -e .
+   ```
+
+2. **Summarize costs** from a CSV/JSON cost export with the `report` subcommand. The `input` argument accepts a file or `-` for stdin; choose a grouping dimension with `--group-by` (`service`, `provider`, `account`, `region`):
+
+   ```bash
+   cloudbill report costs.csv --group-by service
+   ```
+
+3. **Detect daily spend spikes** with the `anomalies` subcommand — `--threshold` sets the z-score cutoff (default 2.5) and `--min-history` the minimum prior days before flagging (default 3):
+
+   ```bash
+   cloudbill anomalies costs.csv --threshold 3 --min-history 5
+   ```
+
+4. **Read / export the output.** Use the global `--format json` flag (before the subcommand) for piping. The `report` table shows per-group cost and percentage; `anomalies` shows group/date/cost/baseline/z-score/severity. Export FOCUS-conformant rows with the `focus` subcommand:
+
+   ```bash
+   cloudbill --format json focus costs.csv > focus.json
+   ```
+
+5. **Use it in automation** — run the anomaly check on each new billing drop and alert on spikes:
+
+   ```bash
+   cloudbill --format json anomalies costs.csv | jq -e '.count == 0' \
+     || echo "Cloud spend anomaly detected"
+   ```
+
+
 ## Contents
 
 - [Why cloudbill?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
