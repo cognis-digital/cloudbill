@@ -13,6 +13,11 @@ from dataclasses import dataclass, asdict
 from datetime import date, datetime
 from typing import Any, Iterable
 
+TOOL_NAME = "cloudbill"
+TOOL_VERSION = "0.1.0"
+
+_VALID_GROUP_BY = frozenset({"service", "provider", "account", "region"})
+
 # FOCUS = FinOps Open Cost & Usage Specification. We map our normalized fields
 # onto a subset of FOCUS 1.0 column names on export.
 
@@ -134,6 +139,8 @@ def load_records(text: str, fmt: str = "auto") -> list[CostRecord]:
     JSON may be a list of objects or an object with a top-level "rows"/"data"
     list. CSV must have a header row.
     """
+    if not isinstance(text, str):
+        raise CloudBillError("input must be a string")
     text = text.strip()
     if not text:
         raise CloudBillError("no input data")
@@ -161,7 +168,7 @@ def load_records(text: str, fmt: str = "auto") -> list[CostRecord]:
         reader = csv.DictReader(io.StringIO(text))
         rows = list(reader)
     else:
-        raise CloudBillError(f"unknown format: {fmt}")
+        raise CloudBillError(f"unknown format: {fmt!r}")
 
     if not rows:
         raise CloudBillError("input contained zero rows")
@@ -179,8 +186,16 @@ def _group_key(rec: CostRecord, dim: str) -> str:
     }.get(dim, rec.service)
 
 
-def summarize(records: Iterable[CostRecord], group_by: str = "service") -> dict[str, Any]:
+def summarize(
+    records: Iterable[CostRecord],
+    group_by: str = "service",
+) -> dict[str, Any]:
     """Build a cost report grouped by a dimension."""
+    if group_by not in _VALID_GROUP_BY:
+        raise CloudBillError(
+            f"invalid group_by {group_by!r}; "
+            f"must be one of {sorted(_VALID_GROUP_BY)}"
+        )
     records = list(records)
     if not records:
         raise CloudBillError("no records to summarize")
@@ -238,6 +253,19 @@ def detect_anomalies(
     when its cost exceeds the mean of all preceding days by more than
     ``z_threshold`` standard deviations (and history is sufficient).
     """
+    if group_by not in _VALID_GROUP_BY:
+        raise CloudBillError(
+            f"invalid group_by {group_by!r}; "
+            f"must be one of {sorted(_VALID_GROUP_BY)}"
+        )
+    if z_threshold <= 0:
+        raise CloudBillError(
+            f"z_threshold must be positive, got {z_threshold!r}"
+        )
+    if min_history < 1:
+        raise CloudBillError(
+            f"min_history must be at least 1, got {min_history!r}"
+        )
     records = list(records)
     # Aggregate cost per (group, date).
     series: dict[str, dict[date, float]] = {}

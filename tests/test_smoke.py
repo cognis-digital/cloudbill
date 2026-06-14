@@ -113,5 +113,103 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(code, 1)
 
 
+class TestHardening(unittest.TestCase):
+    """Tests covering the new input-validation and error-handling paths."""
+
+    # --- core.py ---
+
+    def test_tool_name_version_in_core(self):
+        """TOOL_NAME / TOOL_VERSION must be defined directly in core."""
+        from cloudbill.core import TOOL_NAME as TN, TOOL_VERSION as TV
+        self.assertEqual(TN, "cloudbill")
+        self.assertTrue(TV)
+
+    def test_load_records_non_string_raises(self):
+        with self.assertRaises(CloudBillError):
+            load_records(None)  # type: ignore[arg-type]
+
+    def test_load_records_unknown_format_raises(self):
+        csv_text = "date,cost\n2026-01-01,5.0\n"
+        with self.assertRaises(CloudBillError) as ctx:
+            load_records(csv_text, fmt="parquet")
+        self.assertIn("unknown format", str(ctx.exception))
+
+    def test_summarize_invalid_group_by_raises(self):
+        recs = load_records(CSV)
+        with self.assertRaises(CloudBillError) as ctx:
+            summarize(recs, group_by="nonsense")
+        self.assertIn("invalid group_by", str(ctx.exception))
+
+    def test_detect_anomalies_invalid_group_by_raises(self):
+        recs = load_records(CSV)
+        with self.assertRaises(CloudBillError) as ctx:
+            detect_anomalies(recs, group_by="nonsense")
+        self.assertIn("invalid group_by", str(ctx.exception))
+
+    def test_detect_anomalies_bad_threshold_raises(self):
+        recs = load_records(CSV)
+        with self.assertRaises(CloudBillError) as ctx:
+            detect_anomalies(recs, z_threshold=0.0)
+        self.assertIn("z_threshold", str(ctx.exception))
+
+    def test_detect_anomalies_bad_min_history_raises(self):
+        recs = load_records(CSV)
+        with self.assertRaises(CloudBillError) as ctx:
+            detect_anomalies(recs, min_history=0)
+        self.assertIn("min_history", str(ctx.exception))
+
+    def test_to_focus_empty_list_returns_empty(self):
+        self.assertEqual(to_focus([]), [])
+
+    # --- cli.py ---
+
+    def _capture(self, argv):
+        out = io.StringIO()
+        err = io.StringIO()
+        old_out, old_err = sys.stdout, sys.stderr
+        sys.stdout, sys.stderr = out, err
+        try:
+            code = main(argv)
+        finally:
+            sys.stdout, sys.stderr = old_out, old_err
+        return code, out.getvalue(), err.getvalue()
+
+    def test_cli_negative_threshold_returns_2(self):
+        code, _, err = self._capture(
+            ["--format", "json", "anomalies", DEMO, "--threshold", "-1"]
+        )
+        self.assertEqual(code, 2)
+        self.assertIn("threshold", err.lower())
+
+    def test_cli_zero_min_history_returns_2(self):
+        code, _, err = self._capture(
+            ["--format", "json", "anomalies", DEMO, "--min-history", "0"]
+        )
+        self.assertEqual(code, 2)
+        self.assertIn("min-history", err.lower())
+
+    def test_cli_missing_file_has_informative_message(self):
+        code, _, err = self._capture(["report", "no-such-file.csv"])
+        self.assertEqual(code, 1)
+        self.assertIn("no-such-file.csv", err)
+
+    def test_cli_malformed_json_returns_1(self):
+        import os
+        import tempfile
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json", delete=False, encoding="utf-8"
+        ) as tf:
+            tf.write("{bad json}")
+            tf_path = tf.name
+        try:
+            code, _, err = self._capture(
+                ["--format", "json", "report", "--input-format", "json", tf_path]
+            )
+            self.assertEqual(code, 1)
+            self.assertIn("error", err.lower())
+        finally:
+            os.unlink(tf_path)
+
+
 if __name__ == "__main__":
     unittest.main()

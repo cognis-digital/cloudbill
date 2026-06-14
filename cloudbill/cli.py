@@ -109,8 +109,33 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    # Validate numeric arguments that argparse cannot constrain by itself.
+    if hasattr(args, "threshold") and args.threshold <= 0:
+        print(
+            "error: --threshold must be a positive number",
+            file=sys.stderr,
+        )
+        return 2
+    if hasattr(args, "min_history") and args.min_history < 1:
+        print(
+            "error: --min-history must be at least 1",
+            file=sys.stderr,
+        )
+        return 2
+
     try:
         text = _read_input(args.input)
+    except FileNotFoundError:
+        print(f"error: file not found: {args.input}", file=sys.stderr)
+        return 1
+    except PermissionError:
+        print(f"error: permission denied: {args.input}", file=sys.stderr)
+        return 1
+    except OSError as exc:
+        print(f"error: cannot read {args.input}: {exc}", file=sys.stderr)
+        return 1
+
+    try:
         records = load_records(text, fmt=args.input_format)
 
         if args.command == "report":
@@ -129,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
         else:  # pragma: no cover - argparse enforces choices
             parser.error(f"unknown command: {args.command}")
             return 2
-    except (CloudBillError, OSError) as exc:
+    except CloudBillError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
