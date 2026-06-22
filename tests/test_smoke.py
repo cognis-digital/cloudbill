@@ -1,4 +1,5 @@
 """Smoke tests for CLOUDBILL. Standard library only, no network."""
+import csv
 import io
 import json
 import os
@@ -111,6 +112,85 @@ class TestCLI(unittest.TestCase):
     def test_missing_file_returns_nonzero(self):
         code, _ = self._capture(["report", "does-not-exist.csv"])
         self.assertEqual(code, 1)
+
+    def test_focus_csv_export(self):
+        code, output = self._capture(["--format", "csv", "focus", DEMO])
+        self.assertEqual(code, 0)
+        rows = list(csv.DictReader(io.StringIO(output)))
+        self.assertEqual(len(rows), 36)  # one row per input line
+        self.assertIn("BilledCost", rows[0])
+        self.assertIn("ChargePeriodStart", rows[0])
+
+    def test_report_csv_export(self):
+        code, output = self._capture(
+            ["--format", "csv", "report", DEMO, "--group-by", "provider"])
+        self.assertEqual(code, 0)
+        rows = list(csv.DictReader(io.StringIO(output)))
+        self.assertEqual({r["group"] for r in rows}, {"aws", "azure", "gcp"})
+        self.assertEqual(set(rows[0].keys()), {"group", "cost", "pct"})
+
+    def test_anomalies_csv_export(self):
+        code, output = self._capture(["--format", "csv", "anomalies", DEMO])
+        self.assertEqual(code, 0)
+        rows = list(csv.DictReader(io.StringIO(output)))
+        self.assertTrue(any(r["group"] == "AmazonEC2" for r in rows))
+        self.assertIn("severity", rows[0])
+
+
+class TestDemos(unittest.TestCase):
+    """Every shipped demo must actually load and produce the documented output."""
+
+    DEMOS_DIR = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "demos")
+
+    def _load(self, *parts):
+        path = os.path.join(self.DEMOS_DIR, *parts)
+        with open(path, "r", encoding="utf-8") as fh:
+            return load_records(fh.read())
+
+    def test_aws_cur_aliases_resolve(self):
+        recs = self._load("04-aws-cur-aliases", "cur.csv")
+        # CUR-native headers must normalize without preprocessing.
+        self.assertTrue(any(r.service == "AmazonEC2" for r in recs))
+        anomalies = detect_anomalies(recs, min_history=3)
+        self.assertTrue(any(a.group == "AWSDataTransfer" for a in anomalies))
+
+    def test_azure_aliases_and_eur(self):
+        recs = self._load("05-azure-cost-mgmt", "azure_costs.csv")
+        rep = summarize(recs, group_by="account")
+        self.assertEqual(rep["currency"], "EUR")
+        self.assertEqual(len(rep["groups"]), 2)
+
+    def test_gcp_json_nested_rows(self):
+        recs = self._load("06-gcp-json", "gcp_billing.json")
+        anomalies = detect_anomalies(recs)
+        self.assertTrue(any(a.group == "BigQuery" and a.severity == "critical"
+                            for a in anomalies))
+
+    def test_savings_plan_expiry_spike(self):
+        recs = self._load("07-savings-plan-spike", "usage.csv")
+        anomalies = detect_anomalies(recs)
+        self.assertTrue(any(a.group == "AmazonEC2" and a.date == "2026-01-14"
+                            for a in anomalies))
+
+    def test_focus_export_csv_demo(self):
+        recs = self._load("08-focus-export-csv", "mixed_providers.csv")
+        self.assertEqual(len(to_focus(recs)), 6)
+
+    def test_multicurrency_is_mixed(self):
+        recs = self._load("09-multicurrency", "global_costs.csv")
+        self.assertEqual(summarize(recs)["currency"], "MIXED")
+
+    def test_sparse_defaults(self):
+        recs = self._load("10-tag-untagged-region", "sparse.csv")
+        self.assertTrue(all(r.account == "unknown" for r in recs))
+        self.assertTrue(all(r.region == "global" for r in recs))
+
+    def test_ci_budget_gate_data_has_spike(self):
+        recs = self._load("11-ci-budget-gate", "daily_drop.csv")
+        anomalies = detect_anomalies(recs)
+        self.assertTrue(any(a.group == "AmazonEC2" and a.severity == "critical"
+                            for a in anomalies))
 
 
 if __name__ == "__main__":

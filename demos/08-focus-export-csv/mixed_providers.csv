@@ -1,0 +1,7 @@
+provider,account,service,region,date,cost,currency
+aws,1234-5678-9012,AmazonEC2,us-east-1,2026-05-01,120.00,USD
+aws,1234-5678-9012,AmazonS3,us-east-1,2026-05-01,15.40,USD
+azure,sub-prod-eu,Virtual Machines,westeurope,2026-05-01,98.20,USD
+gcp,proj-data-01,BigQuery,us-central1,2026-05-01,44.10,USD
+gcp,proj-data-01,Compute Engine,us-central1,2026-05-01,61.75,USD
+oci,tenancy-7788,Compute,us-ashburn-1,2026-05-01,22.50,USD

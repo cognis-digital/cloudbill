@@ -1,0 +1,16 @@
+lineItem/ProductCode,linked_account_id,lineItem/UsageStartDate,Region,lineItem/UnblendedCost,CurrencyCode
+AmazonEC2,1122-3344-5566,2026-04-01,us-east-1,128.40,USD
+AmazonEC2,1122-3344-5566,2026-04-02,us-east-1,131.10,USD
+AmazonEC2,1122-3344-5566,2026-04-03,us-east-1,127.95,USD
+AmazonEC2,1122-3344-5566,2026-04-04,us-east-1,129.80,USD
+AmazonEC2,1122-3344-5566,2026-04-05,us-east-1,130.20,USD
+AmazonRDS,1122-3344-5566,2026-04-01,us-east-1,54.00,USD
+AmazonRDS,1122-3344-5566,2026-04-02,us-east-1,54.30,USD
+AmazonRDS,1122-3344-5566,2026-04-03,us-east-1,53.80,USD
+AmazonRDS,1122-3344-5566,2026-04-04,us-east-1,54.10,USD
+AmazonRDS,1122-3344-5566,2026-04-05,us-east-1,55.00,USD
+AWSDataTransfer,1122-3344-5566,2026-04-01,us-east-1,9.20,USD
+AWSDataTransfer,1122-3344-5566,2026-04-02,us-east-1,9.45,USD
+AWSDataTransfer,1122-3344-5566,2026-04-03,us-east-1,9.10,USD
+AWSDataTransfer,1122-3344-5566,2026-04-04,us-east-1,9.30,USD
+AWSDataTransfer,1122-3344-5566,2026-04-05,us-east-1,118.60,USD

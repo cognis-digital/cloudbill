@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import csv as _csv
+import io
 import json
 import sys
 from typing import Any
@@ -23,9 +25,45 @@ def _read_input(path: str) -> str:
         return fh.read()
 
 
+def _csv_rows(data: Any) -> list[dict[str, Any]]:
+    """Flatten the common report/anomaly/focus shapes into CSV rows.
+
+    - ``focus`` export is already a list of flat row dicts.
+    - ``report`` emits one row per group (the per-group breakdown).
+    - ``anomalies`` emits one row per detected anomaly.
+    Anything else falls back to a single key/value row set.
+    """
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict) and "groups" in data:
+        return data["groups"]
+    if isinstance(data, dict) and "anomalies" in data:
+        return data["anomalies"]
+    if isinstance(data, dict):
+        return [data]
+    return [{"value": data}]
+
+
 def _emit(data: Any, fmt: str) -> None:
     if fmt == "json":
         print(json.dumps(data, indent=2, sort_keys=False))
+    elif fmt == "csv":
+        rows = _csv_rows(data)
+        if not rows:
+            return
+        # Union of keys, preserving first-seen order, so ragged rows survive.
+        cols: list[str] = []
+        for r in rows:
+            for k in r:
+                if k not in cols:
+                    cols.append(k)
+        buf = io.StringIO()
+        writer = _csv.DictWriter(buf, fieldnames=cols, extrasaction="ignore",
+                                 lineterminator="\n")
+        writer.writeheader()
+        for r in rows:
+            writer.writerow(r)
+        sys.stdout.write(buf.getvalue())
     else:
         _print_table(data)
 
@@ -76,7 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p.add_argument("--version", action="version",
                    version=f"{TOOL_NAME} {TOOL_VERSION}")
-    p.add_argument("--format", choices=("table", "json"), default="table",
+    p.add_argument("--format", choices=("table", "json", "csv"), default="table",
                    help="output format (default: table)")
 
     sub = p.add_subparsers(dest="command", required=True)

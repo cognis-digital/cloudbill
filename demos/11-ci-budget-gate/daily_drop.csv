@@ -1,0 +1,13 @@
+provider,account,service,region,date,cost,currency
+aws,prod,AmazonEC2,us-east-1,2026-06-10,300.00,USD
+aws,prod,AmazonEC2,us-east-1,2026-06-11,305.00,USD
+aws,prod,AmazonEC2,us-east-1,2026-06-12,298.00,USD
+aws,prod,AmazonEC2,us-east-1,2026-06-13,302.00,USD
+aws,prod,AmazonEC2,us-east-1,2026-06-14,301.00,USD
+aws,prod,AmazonEC2,us-east-1,2026-06-15,1180.00,USD
+aws,prod,AmazonS3,us-east-1,2026-06-10,40.00,USD
+aws,prod,AmazonS3,us-east-1,2026-06-11,41.00,USD
+aws,prod,AmazonS3,us-east-1,2026-06-12,39.50,USD
+aws,prod,AmazonS3,us-east-1,2026-06-13,40.20,USD
+aws,prod,AmazonS3,us-east-1,2026-06-14,40.80,USD
+aws,prod,AmazonS3,us-east-1,2026-06-15,41.10,USD

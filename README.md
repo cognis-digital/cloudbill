@@ -40,11 +40,16 @@ cloudbill scan .            # → prioritized findings in seconds
    cloudbill anomalies costs.csv --threshold 3 --min-history 5
    ```
 
-4. **Read / export the output.** Use the global `--format json` flag (before the subcommand) for piping. The `report` table shows per-group cost and percentage; `anomalies` shows group/date/cost/baseline/z-score/severity. Export FOCUS-conformant rows with the `focus` subcommand:
+4. **Read / export the output.** Use the global `--format` flag (before the subcommand) — `table` (default, human-readable), `json` (piping/agents), or `csv` (load into a warehouse / spreadsheet). The `report` table shows per-group cost and percentage; `anomalies` shows group/date/cost/baseline/z-score/severity. Export FOCUS-conformant rows with the `focus` subcommand:
 
    ```bash
-   cloudbill --format json focus costs.csv > focus.json
+   cloudbill --format json focus costs.csv > focus.json   # JSON for an API/agent
+   cloudbill --format csv  focus costs.csv > focus.csv    # CSV for BigQuery/Snowflake/Excel
    ```
+
+   `--format csv` works for every subcommand: `focus` emits the FOCUS column
+   schema, `report` emits the per-group breakdown, and `anomalies` emits one row
+   per detected spike.
 
 5. **Use it in automation** — run the anomaly check on each new billing drop and alert on spikes:
 
@@ -56,7 +61,7 @@ cloudbill scan .            # → prioritized findings in seconds
 
 ## Contents
 
-- [Why cloudbill?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
+- [Why cloudbill?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Demos](#demos) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
 
 <a name="why"></a>
 ## Why cloudbill?
@@ -73,7 +78,7 @@ FinOps
 - ✅ Load Records
 - ✅ Summarize
 - ✅ Detect Anomalies
-- ✅ To Focus
+- ✅ FOCUS 1.0 export (table · JSON · **CSV**)
 - ✅ Runs on Linux/macOS/Windows · Docker · devcontainer
 - ✅ Ports in Python, JavaScript, Go, and Rust (`ports/`)
 
@@ -101,6 +106,34 @@ $ cloudbill scan .
   [MEDIUM  ] CLO-002  another signal              (./config.yaml)
 
   2 findings · risk score 5 · 38ms
+```
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+<a name="demos"></a>
+## Demos — real FinOps scenarios
+
+Each folder under [`demos/`](demos/) ships a realistic billing export in the
+tool's real input format plus a `SCENARIO.md` (where the data came from, the
+exact command, what to expect, and how to act). Every demo is exercised by the
+test suite, so they always run.
+
+| Demo | Format | What it shows |
+|---|---|---|
+| [`01-basic`](demos/01-basic/) | CSV | Three-provider report + EC2 GPU-fleet spike |
+| [`04-aws-cur-aliases`](demos/04-aws-cur-aliases/) | CSV | Native **AWS CUR** column names; data-transfer egress spike |
+| [`05-azure-cost-mgmt`](demos/05-azure-cost-mgmt/) | CSV | **Azure Cost Management** export by subscription; EUR billing |
+| [`06-gcp-json`](demos/06-gcp-json/) | JSON | **GCP BigQuery** billing export (nested `rows`); query-cost blowout |
+| [`07-savings-plan-spike`](demos/07-savings-plan-spike/) | CSV | Savings Plan / RI **expiry** step-up detection |
+| [`08-focus-export-csv`](demos/08-focus-export-csv/) | CSV | Four-cloud **FOCUS 1.0** export to CSV/JSON |
+| [`09-multicurrency`](demos/09-multicurrency/) | CSV | `MIXED` currency guard (no silent FX) |
+| [`10-tag-untagged-region`](demos/10-tag-untagged-region/) | CSV | Sparse export → `unknown`/`global` tagging-hygiene finding |
+| [`11-ci-budget-gate`](demos/11-ci-budget-gate/) | CSV + sh | CI gate that **fails the build** on a spend spike |
+
+```bash
+python -m cloudbill report demos/04-aws-cur-aliases/cur.csv
+python -m cloudbill --format json anomalies demos/06-gcp-json/gcp_billing.json
+python -m cloudbill --format csv focus demos/08-focus-export-csv/mixed_providers.csv
 ```
 
 <div align="right"><a href="#top">↑ back to top</a></div>

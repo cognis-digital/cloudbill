@@ -1,0 +1,17 @@
+SubscriptionId,MeterCategory,ResourceLocation,UsageDate,PretaxCost,BillingCurrency
+00000000-aaaa-bbbb-cccc-111111111111,Virtual Machines,westeurope,2026-03-01,212.50,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Virtual Machines,westeurope,2026-03-02,209.80,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Virtual Machines,westeurope,2026-03-03,214.10,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Virtual Machines,westeurope,2026-03-04,211.30,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Storage,westeurope,2026-03-01,38.00,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Storage,westeurope,2026-03-02,38.40,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Storage,westeurope,2026-03-03,37.90,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Storage,westeurope,2026-03-04,38.20,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Azure SQL Database,westeurope,2026-03-01,96.00,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Azure SQL Database,westeurope,2026-03-02,95.50,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Azure SQL Database,westeurope,2026-03-03,96.80,EUR
+00000000-aaaa-bbbb-cccc-111111111111,Azure SQL Database,westeurope,2026-03-04,97.10,EUR
+00000000-aaaa-bbbb-cccc-222222222222,Virtual Machines,northeurope,2026-03-01,88.00,EUR
+00000000-aaaa-bbbb-cccc-222222222222,Virtual Machines,northeurope,2026-03-02,87.40,EUR
+00000000-aaaa-bbbb-cccc-222222222222,Virtual Machines,northeurope,2026-03-03,89.10,EUR
+00000000-aaaa-bbbb-cccc-222222222222,Virtual Machines,northeurope,2026-03-04,88.60,EUR

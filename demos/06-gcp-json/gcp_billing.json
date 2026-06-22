@@ -1,0 +1,17 @@
+{
+  "export_name": "gcp-bigquery-billing-export",
+  "rows": [
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Compute Engine", "location": "us-central1", "usage_date": "2026-02-10", "cost": "74.20", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Compute Engine", "location": "us-central1", "usage_date": "2026-02-11", "cost": "75.80", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Compute Engine", "location": "us-central1", "usage_date": "2026-02-12", "cost": "73.95", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Compute Engine", "location": "us-central1", "usage_date": "2026-02-13", "cost": "74.60", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "BigQuery", "location": "us-central1", "usage_date": "2026-02-10", "cost": "31.00", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "BigQuery", "location": "us-central1", "usage_date": "2026-02-11", "cost": "30.40", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "BigQuery", "location": "us-central1", "usage_date": "2026-02-12", "cost": "32.10", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "BigQuery", "location": "us-central1", "usage_date": "2026-02-13", "cost": "412.75", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Cloud Storage", "location": "us-central1", "usage_date": "2026-02-10", "cost": "12.00", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Cloud Storage", "location": "us-central1", "usage_date": "2026-02-11", "cost": "12.20", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Cloud Storage", "location": "us-central1", "usage_date": "2026-02-12", "cost": "11.90", "currency": "USD"},
+    {"cloud": "gcp", "project_id": "analytics-prod-7781", "ServiceName": "Cloud Storage", "location": "us-central1", "usage_date": "2026-02-13", "cost": "12.05", "currency": "USD"}
+  ]
+}

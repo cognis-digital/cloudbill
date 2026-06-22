@@ -1,0 +1,7 @@
+service,date,cost
+AmazonEC2,2026-06-01,210.00
+AmazonEC2,2026-06-01,55.00
+AmazonS3,2026-06-01,18.00
+LambdaFunctions,2026-06-01,4.20
+AmazonEC2,2026-06-02,208.00
+AmazonS3,2026-06-02,18.50
