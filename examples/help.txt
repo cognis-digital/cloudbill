@@ -1,0 +1,18 @@
+$ cloudbill-emit --help
+
+usage: cloudbill [-h] [--version] [--format {table,json,csv}]
+                 {report,anomalies,focus} ...
+
+Multi-cloud cost report, anomaly detection, and FOCUS export.
+
+positional arguments:
+  {report,anomalies,focus}
+    report              summarize costs grouped by a dimension
+    anomalies           detect daily spend spikes
+    focus               export records as FOCUS-conformant rows
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json,csv}
+                        output format (default: table)

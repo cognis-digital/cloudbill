@@ -20,6 +20,64 @@ pip install cognis-cloudbill
 cloudbill scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ cloudbill-emit --version
+cloudbill 0.1.0
+```
+
+```console
+$ cloudbill-emit --help
+usage: cloudbill [-h] [--version] [--format {table,json,csv}]
+                 {report,anomalies,focus} ...
+
+Multi-cloud cost report, anomaly detection, and FOCUS export.
+
+positional arguments:
+  {report,anomalies,focus}
+    report              summarize costs grouped by a dimension
+    anomalies           detect daily spend spikes
+    focus               export records as FOCUS-conformant rows
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json,csv}
+                        output format (default: table)
+```
+
+> Blocks above are real `cloudbill` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"Findings": [
+    {
+        "id": "1",
+        "title": "Suspicious Network Traffic",
+        "description": "Network traffic from unknown IP address",
+        "severity": "medium",
+        "created_at": "2023-02-15T14:30:00Z"
+    },
+    {
+        "id": "2",
+        "title": "Unusual File Access",
+        "description": "File access from unknown user",
+        "severity": "high",
+        "created_at": "2023-02-16T10:45:00Z"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install:**
